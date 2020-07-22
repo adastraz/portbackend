@@ -3,14 +3,9 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './data/blog.db3'
+      filename: './database/blog.db3'
     },
-    migrations: {
-      directory: './data/migrations'
-    },
-    seeds: {
-      directory: './data/seeds'
-    }
+    useNullAsDefault: true
   },
 
   staging: {
@@ -25,7 +20,7 @@ module.exports = {
       max: 10
     },
     migrations: {
-      tableName: 'knex_migrations'
+      tableName: './migrations'
     }
   },
 
@@ -41,10 +36,10 @@ module.exports = {
       max: 10
     },
     migrations: {
-      tableName: './data/migrations'
+      tableName: './migrations'
     },
     seeds: {
-      directory: './data/seeds'
+      directory: './seeds'
     }
   }
 }
