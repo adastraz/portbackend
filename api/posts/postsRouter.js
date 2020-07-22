@@ -1,20 +1,21 @@
 const router = require('express').Router()
+const Posts = require('./postsModel.js')
 
 router.get('/', (req, res) => {
     res.json({ message: 'get posts' })
 })
 
-router.post('/new', (req, res) => {
+router.post('/new', validatePost, (req, res) => {
     res.json({ message: 'unavailable' })
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', idPost, (req, res) => {
     const { id } = req.params
 
     res.json({ message: 'unavailable' })
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', idPost, (req, res) => {
     const { id } = req.params
 
     res.json({ message: 'unavailable' })

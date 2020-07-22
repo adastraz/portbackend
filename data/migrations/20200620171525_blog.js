@@ -12,10 +12,10 @@ exports.up = function(knex) {
             tbl.string('title').notNullable()
             tbl.string('post').notNullable()
         })
-};
+}
 
 exports.down = function(knex) {
     return knex.schema
         .dropTableIfExists('posts')
         .dropTableIfExists('users')
-};
+}

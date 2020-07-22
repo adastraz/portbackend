@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const {jwtSecret } = require('../../config/secrets.js')
 
+const Users = require('./authModel.js')
+
 router.get('/register', validateCred, (req, res) => {
     let user = req.body
     const hash = bcrypt.hashSync(user.password, 8)
