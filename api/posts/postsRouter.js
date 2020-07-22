@@ -2,11 +2,23 @@ const router = require('express').Router()
 const Posts = require('./postsModel.js')
 
 router.get('/', (req, res) => {
-    res.json({ message: 'get posts' })
+    Posts.find()
+        .then(posts => {
+            res.json(posts)
+        })
+        .catch(err => {
+            res.send(err)
+        })
 })
 
 router.post('/new', validatePost, (req, res) => {
-    res.json({ message: 'unavailable' })
+    Posts.addPost(req.body)
+        .then(post => {
+            res.status(201).json(post)
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Failed to create new post' })
+        })
 })
 
 router.put('/:id', idPost, (req, res) => {
