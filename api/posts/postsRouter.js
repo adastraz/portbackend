@@ -24,13 +24,37 @@ router.post('/new', validatePost, (req, res) => {
 router.put('/:id', idPost, (req, res) => {
     const { id } = req.params
 
-    res.json({ message: 'unavailable' })
+    Posts.findById(id)
+        .then(post => {
+            if (post) {
+                Posts.update(id, req.body)
+                    .then(updatedPost => {
+                        res.json(updatedPost)
+                    })
+                    .catch(err => {
+                        res.json({ message: 'failed to update post'})
+                    })
+            } else {
+                res.status(404).json({ message: 'Could not find the post with the given id'})
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({ message: 'failed to update post'})
+        })
 })
 
 router.delete('/:id', idPost, (req, res) => {
     const { id } = req.params
 
-    res.json({ message: 'unavailable' })
+    Posts.remove(id)
+        .then(removed => {
+            res.json({ deleted: removed })
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({ message: 'Failed to delete post' })
+        })
 })
 
 function validatePost(req, res, next) {
@@ -43,6 +67,15 @@ function validatePost(req, res, next) {
 
 function idPost(req, res, next) {
     const { id } = req.params
+
+    Posts.findById(id)
+        .then(post => {
+            if (post && Object.entries(post).length) {
+                next()
+            } else {
+                res.status(400).json({ message: 'Post does not exist' })
+            }
+        })
 }
 
 module.exports = router
