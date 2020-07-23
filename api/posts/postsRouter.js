@@ -11,6 +11,18 @@ router.get('/', (req, res) => {
         })
 })
 
+router.get('/:id', (req, res) => {
+    const { id } = req.params
+
+    Posts.findById(id)
+        .then(posts => {
+            res.json(posts)
+        })
+        .catch(err => {
+            res.send(err)
+        })
+})
+
 router.post('/new', validatePost, (req, res) => {
     Posts.addPost(req.body)
         .then(post => {
@@ -21,7 +33,7 @@ router.post('/new', validatePost, (req, res) => {
         })
 })
 
-router.put('/:id', idPost, (req, res) => {
+router.put('/:id', idPost, validatePutPost, (req, res) => {
     const { id } = req.params
 
     Posts.findById(id)
@@ -59,6 +71,14 @@ router.delete('/:id', idPost, (req, res) => {
 
 function validatePost(req, res, next) {
     if (req.body.title && req.body.post) {
+        next()
+    } else {
+        res.status(400).json({ message: 'post does not have a title or content' })
+    }
+}
+
+function validatePutPost(req, res, next) {
+    if (req.body.title || req.body.post) {
         next()
     } else {
         res.status(400).json({ message: 'post does not have a title or content' })
